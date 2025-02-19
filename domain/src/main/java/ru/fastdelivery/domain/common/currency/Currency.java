@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 
 /**
- * Валюта для стоимости
+ * Класс, представляющий валюту.
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class Currency {
+    /**
+     * Код валюты.
+     */
     String code;
 }

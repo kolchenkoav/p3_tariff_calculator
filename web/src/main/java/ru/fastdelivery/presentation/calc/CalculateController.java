@@ -15,10 +15,12 @@ import ru.fastdelivery.domain.common.weight.Weight;
 import ru.fastdelivery.domain.delivery.pack.Pack;
 import ru.fastdelivery.domain.delivery.shipment.Shipment;
 import ru.fastdelivery.presentation.api.request.CalculatePackagesRequest;
-import ru.fastdelivery.presentation.api.request.CargoPackage;
 import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
 import ru.fastdelivery.usecase.TariffCalculateUseCase;
 
+/**
+ * Контроллер для расчета стоимости доставки.
+ */
 @RestController
 @RequestMapping("/api/v1/calculate/")
 @RequiredArgsConstructor
@@ -27,11 +29,17 @@ public class CalculateController {
     private final TariffCalculateUseCase tariffCalculateUseCase;
     private final CurrencyFactory currencyFactory;
 
+    /**
+     * Метод для расчета стоимости по упаковкам груза.
+     *
+     * @param request запрос с данными о упаковках груза
+     * @return ответ с рассчитанной стоимостью и минимальной стоимостью
+     */
     @PostMapping
     @Operation(summary = "Расчет стоимости по упаковкам груза")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successful operation"),
-        @ApiResponse(responseCode = "400", description = "Invalid input provided")
+        @ApiResponse(responseCode = "200", description = "Успешная операция"),
+        @ApiResponse(responseCode = "400", description = "Неверный ввод")
     })
     public CalculatePackagesResponse calculate(
             @Valid @RequestBody CalculatePackagesRequest request) {
@@ -50,4 +58,3 @@ public class CalculateController {
         return new CalculatePackagesResponse(calculatedPrice, minimalPrice);
     }
 }
-
