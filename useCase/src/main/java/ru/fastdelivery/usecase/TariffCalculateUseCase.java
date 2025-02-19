@@ -14,11 +14,12 @@ public class TariffCalculateUseCase {
     public Price calc(Shipment shipment) {
         var weightAllPackagesKg = shipment.weightAllPackages().kilograms();
         var minimalPrice = weightPriceProvider.minimalPrice();
+        var costByWeight = weightPriceProvider.costPerKg().multiply(weightAllPackagesKg);
 
-        return weightPriceProvider
-                .costPerKg()
-                .multiply(weightAllPackagesKg)
-                .max(minimalPrice);
+        var volumeAllPackagesM3 = shipment.volumeAllPackages();
+        var costByVolume = weightPriceProvider.costPerM3().multiply(volumeAllPackagesM3);
+
+        return costByWeight.max(costByVolume).max(minimalPrice);
     }
 
     public Price minimalPrice() {

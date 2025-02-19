@@ -30,11 +30,13 @@ class TariffCalculateUseCaseTest {
     void whenCalculatePrice_thenSuccess() {
         var minimalPrice = new Price(BigDecimal.TEN, currency);
         var pricePerKg = new Price(BigDecimal.valueOf(100), currency);
+        var pricePerM3 = new Price(BigDecimal.valueOf(500), currency);
 
         when(weightPriceProvider.minimalPrice()).thenReturn(minimalPrice);
         when(weightPriceProvider.costPerKg()).thenReturn(pricePerKg);
+        when(weightPriceProvider.costPerM3()).thenReturn(pricePerM3);
 
-        var shipment = new Shipment(List.of(new Pack(new Weight(BigInteger.valueOf(1200)) , 100, 100,100)),
+        var shipment = new Shipment(List.of(new Pack(new Weight(BigInteger.valueOf(1200)), 100, 100, 100)),
                 new CurrencyFactory(code -> true).create("RUB"));
         var expectedPrice = new Price(BigDecimal.valueOf(120), currency);
 
@@ -44,6 +46,7 @@ class TariffCalculateUseCaseTest {
                 .withComparatorForType(BigDecimalComparator.BIG_DECIMAL_COMPARATOR, BigDecimal.class)
                 .isEqualTo(expectedPrice);
     }
+
 
     @Test
     @DisplayName("Получение минимальной стоимости -> успешно")
