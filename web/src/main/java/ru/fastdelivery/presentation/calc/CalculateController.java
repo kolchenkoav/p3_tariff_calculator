@@ -36,9 +36,12 @@ public class CalculateController {
     public CalculatePackagesResponse calculate(
             @Valid @RequestBody CalculatePackagesRequest request) {
         var packsWeights = request.packages().stream()
-                .map(CargoPackage::weight)
-                .map(Weight::new)
-                .map(Pack::new)
+                .map(pkg -> new Pack(
+                        new Weight(pkg.weight()),
+                        pkg.length(),
+                        pkg.width(),
+                        pkg.height()
+                ))
                 .toList();
 
         var shipment = new Shipment(packsWeights, currencyFactory.create(request.currencyCode()));

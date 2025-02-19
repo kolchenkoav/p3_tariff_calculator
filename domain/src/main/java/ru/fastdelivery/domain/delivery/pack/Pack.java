@@ -2,6 +2,7 @@ package ru.fastdelivery.domain.delivery.pack;
 
 import ru.fastdelivery.domain.common.weight.Weight;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -38,5 +39,16 @@ public record Pack(Weight weight, int length, int width, int height) {
         } else {
             return value + (ROUND_TO - remainder);
         }
+    }
+
+    public BigDecimal volume() {
+        int roundedLength = roundToNearest50(length);
+        int roundedWidth = roundToNearest50(width);
+        int roundedHeight = roundToNearest50(height);
+
+        return BigDecimal.valueOf(roundedLength)
+                .multiply(BigDecimal.valueOf(roundedWidth))
+                .multiply(BigDecimal.valueOf(roundedHeight))
+                .divide(BigDecimal.valueOf(1_000_000_000), 4, BigDecimal.ROUND_HALF_UP);
     }
 }
