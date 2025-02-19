@@ -34,7 +34,7 @@ class TariffCalculateUseCaseTest {
         when(weightPriceProvider.minimalPrice()).thenReturn(minimalPrice);
         when(weightPriceProvider.costPerKg()).thenReturn(pricePerKg);
 
-        var shipment = new Shipment(List.of(new Pack(new Weight(BigInteger.valueOf(1200)))),
+        var shipment = new Shipment(List.of(new Pack(new Weight(BigInteger.valueOf(1200)) , 100, 100,100)),
                 new CurrencyFactory(code -> true).create("RUB"));
         var expectedPrice = new Price(BigDecimal.valueOf(120), currency);
 

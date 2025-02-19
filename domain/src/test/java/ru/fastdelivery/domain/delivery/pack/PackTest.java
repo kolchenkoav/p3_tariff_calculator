@@ -20,21 +20,21 @@ class PackTest {
     @DisplayName("When weight is more than max weight then throw exception")
     void whenWeightMoreThanMaxWeight_thenThrowException() {
         var weight = new Weight(BigInteger.valueOf(150_001));
-        assertThatThrownBy(() -> new Pack(weight))
+        assertThatThrownBy(() -> new Pack(weight, 100, 100, 100))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("When weight is less than max weight then object created")
     void whenWeightLessThanMaxWeight_thenObjectCreated() {
-        var actual = new Pack(new Weight(BigInteger.valueOf(1_000)));
+        var actual = new Pack(new Weight(BigInteger.valueOf(1_000)), 100, 100, 100);
         assertThat(actual.weight()).isEqualTo(new Weight(BigInteger.valueOf(1_000)));
     }
 
     @Test
     @DisplayName("When value is multiple of 50 then return same value")
     void whenValueIsMultipleOf50_thenReturnSameValue() {
-        Pack pack = new Pack(new Weight(BigInteger.valueOf(2500))); // Assuming Pack constructor doesn't require Weight
+        Pack pack = new Pack(new Weight(BigInteger.valueOf(2500)), 100, 100, 100); // Assuming Pack constructor doesn't require Weight
         assertThat(pack.roundToNearest50(100)).isEqualTo(100);
         assertThat(pack.roundToNearest50(150)).isEqualTo(150);
     }
@@ -54,7 +54,7 @@ class PackTest {
     })
     @DisplayName("When value is not multiple of 50 then round to nearest 50")
     void whenValueIsNotMultipleOf50_thenRoundToNearest50(int value, int expected) {
-        Pack pack = new Pack(new Weight(BigInteger.valueOf(2500))); // Assuming Pack constructor doesn't require Weight
+        Pack pack = new Pack(new Weight(BigInteger.valueOf(2500)), 100, 100, 100); // Assuming Pack constructor doesn't require Weight
         assertThat(pack.roundToNearest50(value)).isEqualTo(expected);
     }
 
@@ -62,7 +62,7 @@ class PackTest {
     @DisplayName("Value is exactly 25 away from the next multiple of 50")
     void whenValueIsExactly25Away_thenRoundUp() {
         Weight weight = new Weight(BigInteger.valueOf(2500));
-        Pack pack = new Pack(weight);
+        Pack pack = new Pack(weight, 100, 100, 100);
         assertThat(pack.roundToNearest50(75)).isEqualTo(100);
         assertThat(pack.roundToNearest50(125)).isEqualTo(150);
     }

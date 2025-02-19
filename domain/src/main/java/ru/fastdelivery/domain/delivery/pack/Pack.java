@@ -9,14 +9,19 @@ import java.math.BigInteger;
  *
  * @param weight вес товаров в упаковке
  */
-public record Pack(Weight weight) {
+public record Pack(Weight weight, int length, int width, int height) {
 
     private static final Weight MAXWEIGHT = new Weight(BigInteger.valueOf(150_000));
     private static final int ROUND_TO = 50;
+    private static final int MAX_DIMENSION = 1500;
 
     public Pack {
         if (weight.greaterThan(MAXWEIGHT)) {
             throw new IllegalArgumentException("Package can't be more than " + MAXWEIGHT);
+        }
+        if (length <= 0 || width <= 0 || height <= 0 ||
+                length > MAX_DIMENSION || width > MAX_DIMENSION || height > MAX_DIMENSION) {
+            throw new IllegalArgumentException("Invalid package dimensions");
         }
     }
 
