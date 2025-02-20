@@ -4,8 +4,9 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 
+import ru.fastdelivery.domain.common.coordinate.Coordinates;
 import ru.fastdelivery.presentation.api.config.LocationProperties;
-import ru.fastdelivery.presentation.api.request.Coordinates;
+
 
 /**
  * Валидатор координат, который проверяет, находятся ли координаты в допустимом диапазоне.

@@ -36,7 +36,7 @@ public class CalculateController {
      * @return ответ с рассчитанной стоимостью и минимальной стоимостью
      */
     @PostMapping
-    @Operation(summary = "Расчет стоимости по упаковкам груза")
+    @Operation(summary = "Расчет стоимости доставки с учетом расстояния")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Успешная операция"),
         @ApiResponse(responseCode = "400", description = "Неверный ввод")
@@ -53,7 +53,7 @@ public class CalculateController {
                 .toList();
 
         var shipment = new Shipment(packsWeights, currencyFactory.create(request.currencyCode()));
-        var calculatedPrice = tariffCalculateUseCase.calc(shipment);
+        var calculatedPrice = tariffCalculateUseCase.calc(shipment, request.departure(), request.destination());
         var minimalPrice = tariffCalculateUseCase.minimalPrice();
         return new CalculatePackagesResponse(calculatedPrice, minimalPrice);
     }

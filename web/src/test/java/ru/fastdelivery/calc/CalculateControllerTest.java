@@ -1,20 +1,17 @@
 package ru.fastdelivery.calc;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.fastdelivery.ControllerTest;
+import ru.fastdelivery.domain.common.coordinate.Coordinates;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.price.Price;
-import ru.fastdelivery.presentation.api.config.LocationProperties;
 import ru.fastdelivery.presentation.api.request.CalculatePackagesRequest;
 import ru.fastdelivery.presentation.api.request.CargoPackage;
-import ru.fastdelivery.presentation.api.request.Coordinates;
 import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
-import ru.fastdelivery.presentation.api.validation.CoordinatesValidator;
 import ru.fastdelivery.usecase.TariffCalculateUseCase;
 
 import java.math.BigDecimal;
