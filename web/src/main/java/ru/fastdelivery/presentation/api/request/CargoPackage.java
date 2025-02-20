@@ -6,6 +6,12 @@ import java.math.BigInteger;
 
 public record CargoPackage(
         @Schema(description = "Вес упаковки, граммы", example = "5667.45")
-        BigInteger weight, int length, int width, int height
+        BigInteger weight,
+        @Schema(description = "Длина упаковки, мм", example = "150")
+        int length,
+        @Schema(description = "Ширина упаковки, мм", example = "100")
+        int width,
+        @Schema(description = "Высота упаковки, мм", example = "50")
+        int height
 ) {
 }

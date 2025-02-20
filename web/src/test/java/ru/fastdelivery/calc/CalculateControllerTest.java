@@ -1,5 +1,6 @@
 package ru.fastdelivery.calc;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -8,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 import ru.fastdelivery.ControllerTest;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.price.Price;
+import ru.fastdelivery.presentation.api.config.LocationProperties;
 import ru.fastdelivery.presentation.api.request.CalculatePackagesRequest;
 import ru.fastdelivery.presentation.api.request.CargoPackage;
+import ru.fastdelivery.presentation.api.request.Coordinates;
 import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
+import ru.fastdelivery.presentation.api.validation.CoordinatesValidator;
 import ru.fastdelivery.usecase.TariffCalculateUseCase;
 
 import java.math.BigDecimal;
@@ -33,7 +37,10 @@ class CalculateControllerTest extends ControllerTest {
     @DisplayName("Валидные данные для расчета стоимость -> Ответ 200")
     void whenValidInputData_thenReturn200() {
         var request = new CalculatePackagesRequest(
-                List.of(new CargoPackage(BigInteger.TEN, 400, 450, 600)), "RUB");
+                List.of(new CargoPackage(BigInteger.TEN, 400, 450, 600)),
+                "RUB",
+                new Coordinates(55.0, 73.0),
+                new Coordinates(55.0, 73.0));
         var rub = new CurrencyFactory(code -> true).create("RUB");
         when(useCase.calc(any())).thenReturn(new Price(BigDecimal.valueOf(10), rub));
         when(useCase.minimalPrice()).thenReturn(new Price(BigDecimal.valueOf(5), rub));
@@ -47,7 +54,25 @@ class CalculateControllerTest extends ControllerTest {
     @Test
     @DisplayName("Список упаковок == null -> Ответ 400")
     void whenEmptyListPackages_thenReturn400() {
-        var request = new CalculatePackagesRequest(null, "RUB");
+        var request = new CalculatePackagesRequest(
+                null,
+                "RUB",
+                new Coordinates(55.0, 73.0),
+                new Coordinates(55.0, 73.0));
+
+        ResponseEntity<String> response = restTemplate.postForEntity(baseCalculateApi, request, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Неверные координаты -> Ответ 400")
+    void whenInvalidCoordinates_thenReturn400() {
+        var request = new CalculatePackagesRequest(
+                List.of(new CargoPackage(BigInteger.TEN, 400, 450, 600)),
+                "RUB",
+                new Coordinates(70.0, 73.0), // Invalid latitude
+                new Coordinates(55.0, 73.0));
 
         ResponseEntity<String> response = restTemplate.postForEntity(baseCalculateApi, request, String.class);
 
