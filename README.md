@@ -154,5 +154,5 @@ http://localhost:8080/swagger-ui/index.html
   "minimalPrice": 350.00,
   "currencyCode": "RUB"
 }
-`
+```
 
