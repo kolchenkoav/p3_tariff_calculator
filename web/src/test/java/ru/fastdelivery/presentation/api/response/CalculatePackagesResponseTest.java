@@ -1,11 +1,10 @@
-package ru.fastdelivery.presentation.api.request;
+package ru.fastdelivery.presentation.api.response;
 
 import org.assertj.core.util.BigDecimalComparator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.price.Price;
-import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
 
 import java.math.BigDecimal;
 

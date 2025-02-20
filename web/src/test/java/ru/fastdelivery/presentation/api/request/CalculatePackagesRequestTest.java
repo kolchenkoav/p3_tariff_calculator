@@ -2,31 +2,38 @@ package ru.fastdelivery.presentation.api.request;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.fastdelivery.domain.common.coordinate.Coordinates;
 import ru.fastdelivery.presentation.api.config.LocationProperties;
 import ru.fastdelivery.presentation.api.validation.CoordinatesValidator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CalculatePackagesRequestTest {
 
-    @MockBean
+    @Mock(strictness = Mock.Strictness.LENIENT)
     private LocationProperties locationProperties;
 
+    @InjectMocks
     private CoordinatesValidator validator;
 
     @BeforeEach
     void setUp() {
-        when(locationProperties.getLatitude().getMin()).thenReturn(45.0);
-        when(locationProperties.getLatitude().getMax()).thenReturn(65.0);
-        when(locationProperties.getLongitude().getMin()).thenReturn(30.0);
-        when(locationProperties.getLongitude().getMax()).thenReturn(96.0);
+        LocationProperties.Latitude latitude = new LocationProperties.Latitude();
+        latitude.setMin(45.0);
+        latitude.setMax(65.0);
 
-        validator = new CoordinatesValidator(locationProperties);
+        LocationProperties.Longitude longitude = new LocationProperties.Longitude();
+        longitude.setMin(30.0);
+        longitude.setMax(96.0);
+
+        lenient().when(locationProperties.getLatitude()).thenReturn(latitude);
+        lenient().when(locationProperties.getLongitude()).thenReturn(longitude);
     }
 
     @Test

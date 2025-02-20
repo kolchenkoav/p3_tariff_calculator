@@ -3,6 +3,7 @@ package ru.fastdelivery.usecase;
 import org.assertj.core.util.BigDecimalComparator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.fastdelivery.domain.common.coordinate.Coordinates;
 import ru.fastdelivery.domain.common.currency.Currency;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.price.Price;
@@ -38,9 +39,13 @@ class TariffCalculateUseCaseTest {
 
         var shipment = new Shipment(List.of(new Pack(new Weight(BigInteger.valueOf(1200)), 100, 100, 100)),
                 new CurrencyFactory(code -> true).create("RUB"));
-        var expectedPrice = new Price(BigDecimal.valueOf(120), currency);
 
-        var actualPrice = tariffCalculateUseCase.calc(shipment);
+        Coordinates departure = new Coordinates(55.7558, 37.6173); // Москва
+        Coordinates destination = new Coordinates(59.9343, 30.3351); // Санкт-Петербург
+
+        var expectedPrice = new Price(BigDecimal.valueOf(240), currency);
+
+        var actualPrice = tariffCalculateUseCase.calc(shipment, departure, destination);
 
         assertThat(actualPrice).usingRecursiveComparison()
                 .withComparatorForType(BigDecimalComparator.BIG_DECIMAL_COMPARATOR, BigDecimal.class)
